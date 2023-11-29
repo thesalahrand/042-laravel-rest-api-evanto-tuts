@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Filters\V1\InvoicesFilter;
 use App\Http\Requests\V1\StoreInvoiceRequest;
 use App\Http\Requests\V1\UpdateInvoiceRequest;
+use App\Http\Requests\V1\BulkStoreInvoiceRequest;
 use App\Http\Resources\V1\InvoiceCollection;
 use App\Http\Resources\V1\InvoiceResource;
 use App\Models\Invoice;
@@ -39,6 +40,15 @@ class InvoiceController extends Controller
     public function store(StoreInvoiceRequest $request)
     {
         //
+    }
+
+    public function bulk(BulkStoreInvoiceRequest $request)
+    {
+        $validated = collect($request->validated())->map(function ($item) {
+            return collect($item)->merge(['created_at' => now(), 'updated_at' => now()])->all();
+        })->toArray();
+
+        Invoice::insert($validated);
     }
 
     /**
