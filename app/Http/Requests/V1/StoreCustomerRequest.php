@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -32,9 +32,9 @@ class StoreCustomerRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
-        return $this->merge([
+        $this->merge([
             'postal_code' => $this->postalCode ?? null
         ]);
     }
